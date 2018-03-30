@@ -1,16 +1,18 @@
 package module_1;
 import java.util.Scanner;
+import java.lang.Math;
 
 /**
  * Program that processes international trip information based on user input.
+ * Module 1 assignment.
  */
 public class TripPlanner {
-
     public static void main(String[] args) {
         Greeting();
         TimeAndBudget();
         TimeDifference();
-
+        CountryArea();
+        TravelDistance();
     }
 
     public static void Greeting(){
@@ -56,10 +58,50 @@ public class TripPlanner {
         int midnightDiff = time % 24;
         int noonDiff = (time + 12) % 24;
         int minutes = (time * 100) % 100;
-        /* handle string conversion to display in :mm format */
+        /* handle minutes to string conversion to display in :mm format */
         String min = Integer.toString(minutes);
         min = min + "0";
         System.out.printf("That means that when it is midnight at home it will be %d:%s in your travel destination %n and when it is noon at home it will be %d:%s", midnightDiff, min, noonDiff, min);
+        System.out.printf("%n ************");
+    }
+
+    public static void CountryArea() {
+        Scanner countryArea = new Scanner(System.in);
+
+        /* conversion from km2 to mi2 */
+        double squareMiles = 0.3861;
+        double miles2 = squareKm * squareMiles;
+
+        System.out.print("What is the square area of your destination country in km2?");
+        double squareKm = countryArea.nextDouble();
+        System.out.printf("In miles2 that is %.2f", miles2);
+        System.out.printf("%n ************");
+    }
+
+    /**
+     * Calculate the distance between two points on a sphere utilizing the Haversine formula
+     * Returns the distance between the home and travel destination.
+     */
+    public static void TravelDistance() {
+        Scanner distance = new Scanner(System.in);
+
+        final int R = 6371; // Earth's radius in km
+        double longDist = Math.toRadians(long2 - long1);
+        double latDist = Math.toRadians(lat2 - lat1);
+        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(longDist / 2) * Math.sin(longDist / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = R * c;
+
+        System.out.print("What is the longitude of your home?");
+        double long1 = distance.nextDouble();
+        System.out.print("What is the latitude of your home?");
+        double lat1 = distance.nextDouble();
+        System.out.print("What is the longitude of your travel destination?");
+        double long2 = distance.nextDouble();
+        System.out.print("What is the latitude of your travel destination?");
+        double lat2 = distance.nextDouble();
+        System.out.println();
+        System.out.printf("The distance between your home and your travel destination is %f", dist);
         System.out.printf("%n ************");
     }
 
